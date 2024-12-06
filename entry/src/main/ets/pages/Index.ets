@@ -1,17 +1,49 @@
+import { Constants } from '../constant/Constants';
+import { TabItem } from '../model/TabItem';
+
 @Entry
 @Component
 struct Index {
   @State message: string = 'Hello World';
+  @State selectedIndex: number = 0;
 
   build() {
-    Row() {
-      Column() {
-        Text(this.message)
-          .fontSize(50)
-          .fontWeight(FontWeight.Bold)
+    Column() {
+      Tabs({
+        index: this.selectedIndex,
+        barPosition: BarPosition.End,
+      }) {
+        TabContent() {
+          Button("hello world").width(200).height(120);
+        }
+        .tabBar(this.TabBottom(Constants.tabTitle[0], 0))
       }
-      .width('100%')
+    }.width('100%')
+  }
+
+  @Builder TabBottom(item: TabItem, index: number) {
+    Column() {
+      Image(this.selectedIndex == index ? item.imageActivated : item.imageOriginal)
+        .height($r('app.float.tab_image_size'))
+        .width($r('app.float.tab_image_size'))
+        .margin({
+          top: $r('app.float.tab_margin_top'),
+          bottom: $r('app.float.tab_margin_bottom')
+        })
+      Text(item.title)
+        .width('100%')
+        .height($r('app.float.tab_text_height'))
+        .fontSize($r('app.float.tab_text_font_size'))
+        .fontWeight(500)
+        .fontColor(this.selectedIndex === index ? $r('app.color.color_red') : Color.Gray)
+        .textAlign(TextAlign.Center)
+        .margin({
+          bottom: $r('app.float.tab_text_margin_bottom')
+        })
     }
+    .justifyContent(FlexAlign.Center)
     .height('100%')
+    .width('100%')
+    .backgroundColor($r("app.color.color_f5f5f5"))
   }
 }
