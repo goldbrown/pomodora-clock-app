@@ -9,7 +9,7 @@ struct SplashPage {
   aboutToAppear() {
     setTimeout(() => {
       router.replaceUrl({ url: RoutePath.IndexPage })
-    }, 100);
+    }, 2000);
   }
 
   build() {

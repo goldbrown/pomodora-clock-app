@@ -16,9 +16,21 @@ struct Index {
         TabContent() {
           Button("hello world").width(200).height(120);
         }
-        .tabBar(this.TabBottom(Constants.tabTitle[0], 0))
-      }
-    }.width('100%')
+        .tabBar(this.TabBottom(Constants.tabTitle[0], 0));
+
+        TabContent() {
+          Button("hello world2").width(200).height(120);
+        }
+        .tabBar(this.TabBottom(Constants.tabTitle[1], 1));
+
+        TabContent() {
+          Button("hello world3").width(200).height(120);
+        }
+        .tabBar(this.TabBottom(Constants.tabTitle[2], 2));
+      }.onChange((index: number) => {
+        this.selectedIndex = index;
+      })
+    }.width('100%');
   }
 
   @Builder TabBottom(item: TabItem, index: number) {
