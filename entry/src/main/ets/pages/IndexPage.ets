@@ -1,11 +1,16 @@
 import { Constants } from '../constant/Constants';
 import { TabItem } from '../model/TabItem';
+import { ToDo } from '../model/ToDo';
 
 @Entry
 @Component
 struct Index {
   @State message: string = 'Hello World';
   @State selectedIndex: number = 0;
+
+  @State toDoData: ToDo[] = [new ToDo('读书'), new ToDo('运动')];
+  private availableThings: string[] = ['读书', '运动', '旅游', '听音乐', '看电影', '唱歌'];
+
 
   build() {
     Column() {
@@ -14,7 +19,16 @@ struct Index {
         barPosition: BarPosition.End,
       }) {
         TabContent() {
-          Button("hello world").width(200).height(120);
+          // Button("hello world").width(200).height(120);
+          List({ space: 10 }) {
+            ForEach(this.toDoData, (toDoItem) => {
+              ListItem() {
+                Row() {
+                  Text('北京').fontSize(20);
+                }
+              }
+            }, toDoItem => toDoItem.key)
+          }
         }
         .tabBar(this.TabBottom(Constants.tabTitle[0], 0));
 
