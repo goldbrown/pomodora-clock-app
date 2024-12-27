@@ -8,7 +8,7 @@ struct Index {
   @State message: string = 'Hello World';
   @State selectedIndex: number = 0;
 
-  @State toDoData: ToDo[] = [new ToDo('读书'), new ToDo('运动')];
+  @State toDoData: ToDo[] = [new ToDo('读书', "123"), new ToDo('运动', "sjkfjld")];
   private availableThings: string[] = ['读书', '运动', '旅游', '听音乐', '看电影', '唱歌'];
 
 
@@ -21,10 +21,37 @@ struct Index {
         TabContent() {
           // Button("hello world").width(200).height(120);
           List({ space: 10 }) {
-            ForEach(this.toDoData, (toDoItem) => {
+            ForEach(this.toDoData, (toDoItem: ToDo) => {
               ListItem() {
                 Row() {
-                  Text('北京').fontSize(20);
+                  // Text('北京').fontSize(20);
+                  Column() {
+                    Text(toDoItem.name).fontSize(20);
+                  }.border({ width: 1 })
+                  .padding(10).width('20%').height(50);
+
+                  Column() {
+                    Text('今日完成2/4次').fontSize(20);
+                  }.border({ width: 1 })
+                  .padding(10)
+                  .width('50%').height(50);
+
+                  Column() {
+                    Button('增加',{
+                      type: ButtonType.Normal,
+                      stateEffect: true
+                    }).fontSize(20).id(toDoItem.id)
+                      .onClick(event => {
+                      console.log("任务：" + toDoItem.id + " 增加1");
+                        AlertDialog.show({
+                          title: '提示',
+                          message: '成功增加1',
+                          autoCancel: true,
+                          alignment: DialogAlignment.Center,
+                        });
+                    });
+                  }.border({ width: 1 })
+                  .padding(0).width('30%').height(50);
                 }
               }
             }, toDoItem => toDoItem.key)
