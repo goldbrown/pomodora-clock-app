@@ -1,6 +1,9 @@
 import { Constants } from '../constant/Constants';
 import { TabItem } from '../model/TabItem';
 import { ToDo } from '../model/ToDo';
+import {HomePageDTO, EntityAggregateDTO} from '../model/HomePageDTO';
+import { EntityDTO } from '../model/EntityDTO';
+import util from '@ohos.util';
 
 @Entry
 @Component
@@ -10,6 +13,31 @@ struct Index {
 
   @State toDoData: ToDo[] = [new ToDo('读书', "123"), new ToDo('运动', "sjkfjld")];
   private availableThings: string[] = ['读书', '运动', '旅游', '听音乐', '看电影', '唱歌'];
+  @State homePageDTO: HomePageDTO = {
+    title: '',
+    entityAggregateList: [],
+    code: util.generateRandomUUID(true),
+  };
+
+  aboutToAppear() {
+    this.fetchHomeData();
+  }
+
+  fetchHomeData() {
+    this.homePageDTO.title = '标题';
+    let entityAggregateDTO: EntityAggregateDTO = {
+      entityDTO: new EntityDTO("椭圆机"),
+      todayNumber: 1,
+    }
+    let entityAggregateDTO2: EntityAggregateDTO = {
+      entityDTO: new EntityDTO("喝水"),
+      todayNumber: 2,
+    }
+    let entityAggregateList: EntityAggregateDTO[] =  [
+      entityAggregateDTO,entityAggregateDTO2
+    ];
+    this.homePageDTO.entityAggregateList = entityAggregateList;
+  }
 
 
   build() {
@@ -19,19 +47,22 @@ struct Index {
         barPosition: BarPosition.End,
       }) {
         TabContent() {
-          // Button("hello world").width(200).height(120);
+          Column() {
+            // Button("hello world").width(200).height(120);
+          Text(this.homePageDTO.title).fontSize(30);
           List({ space: 10 }) {
-            ForEach(this.toDoData, (toDoItem: ToDo) => {
+            ForEach(this.homePageDTO.entityAggregateList, (item: EntityAggregateDTO, index: number) => {
               ListItem() {
                 Row() {
                   // Text('北京').fontSize(20);
                   Column() {
-                    Text(toDoItem.name).fontSize(20);
+                    Text(item.entityDTO.name).fontSize(10);
                   }.border({ width: 1 })
                   .padding(10).width('20%').height(50);
 
                   Column() {
-                    Text('今日完成2/4次').fontSize(20);
+                    // Text('今日完成' + item.todayNumber).fontSize(10);
+                    Text('今日完成:' + item.todayNumber).fontSize(10);
                   }.border({ width: 1 })
                   .padding(10)
                   .width('50%').height(50);
@@ -40,22 +71,27 @@ struct Index {
                     Button('增加',{
                       type: ButtonType.Normal,
                       stateEffect: true
-                    }).fontSize(20).id(toDoItem.id)
+                    }).fontSize(10).id(item.entityDTO.id)
                       .onClick(event => {
-                      console.log("任务：" + toDoItem.id + " 增加1");
-                        AlertDialog.show({
-                          title: '提示',
-                          message: '成功增加1',
-                          autoCancel: true,
-                          alignment: DialogAlignment.Center,
-                        });
+                      console.log("任务：" + item.entityDTO.id + " 增加1");
+                        item.todayNumber = item.todayNumber + 1;
+                        // 用于触发UI更新
+                        this.homePageDTO.code = util.generateRandomUUID(true);
+
+                        // AlertDialog.show({
+                        //   title: '提示',
+                        //   message: '成功增加1',
+                        //   autoCancel: true,
+                        //   alignment: DialogAlignment.Center,
+                        // });
                     });
                   }.border({ width: 1 })
                   .padding(0).width('30%').height(50);
                 }
               }
-            }, toDoItem => toDoItem.key)
+            }, item => JSON.stringify(item));
           }
+          }.width('100%')
         }
         .tabBar(this.TabBottom(Constants.tabTitle[0], 0));
 
@@ -100,3 +136,4 @@ struct Index {
     .backgroundColor($r("app.color.color_f5f5f5"))
   }
 }
+
