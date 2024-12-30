@@ -4,6 +4,8 @@ import { ToDo } from '../model/ToDo';
 import {HomePageDTO, EntityAggregateDTO} from '../model/HomePageDTO';
 import { EntityDTO } from '../model/EntityDTO';
 import util from '@ohos.util';
+import relationalStore from '@ohos.data.relationalStore';
+import hilog from '@ohos.hilog';
 
 @Entry
 @Component
@@ -16,7 +18,7 @@ struct Index {
   @State homePageDTO: HomePageDTO = {
     title: '',
     entityAggregateList: [],
-    code: util.generateRandomUUID(true),
+    randomCode: util.generateRandomUUID(true),
   };
 
   aboutToAppear() {
@@ -76,7 +78,7 @@ struct Index {
                       console.log("任务：" + item.entityDTO.id + " 增加1");
                         item.todayNumber = item.todayNumber + 1;
                         // 用于触发UI更新
-                        this.homePageDTO.code = util.generateRandomUUID(true);
+                        this.homePageDTO.randomCode = util.generateRandomUUID(true);
 
                         // AlertDialog.show({
                         //   title: '提示',

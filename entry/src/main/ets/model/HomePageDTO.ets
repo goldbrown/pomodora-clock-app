@@ -4,7 +4,7 @@ import {EntityDTO} from './EntityDTO'
 export interface  HomePageDTO {
   title: string;
   entityAggregateList: EntityAggregateDTO[];
-  code: string;
+  randomCode: string;
 }
 
 

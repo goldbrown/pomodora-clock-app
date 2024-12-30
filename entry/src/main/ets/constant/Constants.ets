@@ -20,6 +20,8 @@ export class Constants {
       imageOriginal: $r('app.media.icon_unsel_mine')
     }
   ]
+
+  dataLogTag: string = "clockData";
 }
 
 let constants = new Constants();
