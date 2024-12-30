@@ -21,7 +21,7 @@ export class Constants {
     }
   ]
 
-  dataLogTag: string = "clockData";
+  static dataLogTag: string = "clockData";
 }
 
 let constants = new Constants();

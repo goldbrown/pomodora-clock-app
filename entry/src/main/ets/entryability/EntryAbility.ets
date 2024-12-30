@@ -5,14 +5,10 @@ import Want from '@ohos.app.ability.Want';
 import window from '@ohos.window';
 import relationalStore from '@ohos.data.relationalStore';
 import util from '@ohos.util';
-import Constants from '../constant/Constants';
+import { Constants } from '../constant/Constants';
 import { EntityDTO } from '../model/EntityDTO';
 
 export default class EntryAbility extends UIAbility {
-
-
-
-
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
   }
@@ -25,23 +21,23 @@ export default class EntryAbility extends UIAbility {
     // Main window is created, set main page for this ability
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onWindowStageCreate');
 
-       const CREATE_ENTITY_TABLE_SQL:string = "create table IF NOT EXISTS entity (     id text not null,     category text default '',   " +
-    "  name text not null,     desc text default '',    " +
-    " add_time text default '',    " +
-    " update_time text default '',   " +
-    "  deleted integer default 0,     PRIMARY KEY (id) );";
-   const CREATE_ENTITY_RECORD_TABLE_SQL:string = "create table IF NOT EXISTS entity_record (     id text not null,    " +
-    " entity_id text not null,     add_time datetime text default '',    " +
-    " update_time text default '',    " +
-    " deleted integer default 0,     PRIMARY KEY (id) );"
+    const CREATE_ENTITY_TABLE_SQL: string = "create table IF NOT EXISTS entity (     id text not null,     category text default '',   " +
+      "  name text not null,     desc text default '',    " +
+      " add_time text default '',    " +
+      " update_time text default '',   " +
+      "  deleted integer default 0,     PRIMARY KEY (id) );";
+    const CREATE_ENTITY_RECORD_TABLE_SQL: string = "create table IF NOT EXISTS entity_record (     id text not null,    " +
+      " entity_id text not null,     add_time datetime text default '',    " +
+      " update_time text default '',    " +
+      " deleted integer default 0,     PRIMARY KEY (id) );"
 
     // const SQL_CREATE_TABLE = 'CREATE TABLE IF NOT EXISTS employee (id INTEGER PRIMARY KEY AUTOINCREMENT, ' +
     //   'name TEXT NOT NULL, age INTEGER, salary REAL, codes BLOB)';
 
-  const  storeConfig: relationalStore.StoreConfig = {
-    name: 'clock.db',
-    securityLevel: relationalStore.SecurityLevel.S1
-  };
+    const storeConfig: relationalStore.StoreConfig = {
+      name: 'clock.db',
+      securityLevel: relationalStore.SecurityLevel.S1
+    };
 
     relationalStore.getRdbStore(this.context, storeConfig, (err, store) => {
       if (err) {
@@ -99,7 +95,7 @@ export default class EntryAbility extends UIAbility {
         console.info(`ResultSet column names: ${resultSet.columnNames}`);
         hilog.info(0x0000, Constants.dataLogTag, 'ResultSet ROW count: %{public}d', resultSet.rowCount);
         if (resultSet) {
-          while(resultSet.goToNextRow()) {
+          while (resultSet.goToNextRow()) {
             const id: string = resultSet.getString(resultSet.getColumnIndex("id"));
             const name: string = resultSet.getString(resultSet.getColumnIndex("name"));
             const addTime: String = resultSet.getString(resultSet.getColumnIndex("add_time"));
