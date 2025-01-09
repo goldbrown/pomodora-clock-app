@@ -20,6 +20,7 @@ struct Index {
     title: '',
     entityAggregateList: [],
     randomCode: util.generateRandomUUID(true),
+    recordList: []
   };
   @State inputName: string = '';
 
@@ -143,28 +144,26 @@ struct Index {
         TabContent() {
           Column() {
             Row() {
-              TextInput({ placeholder: 'input your name', text: this.inputName}).width('100%')
-                .onSubmit((EnterKeyType)=>{
-                  console.info(EnterKeyType+'输入法回车键的类型值')
-                  console.info("inputName is :" + this.inputName);
-                });
-            }.width('100%')
-            // Button("hello world").width(200).height(120);
+              TextInput({ placeholder: 'input your name', text: this.inputName}).width('100%');
+              Button('添加').fontSize(15).width(100).onClick(event => {
+                console.info("添加内容：" + this.inputName);
+              });
+            }.width('100%');
             Row() {
               Text(this.homePageDTO.title).fontSize(30);
               List() {
-                ForEach(this.homePageDTO.entityAggregateList, (item: EntityAggregateDTO, index: number) => {
+                ForEach(this.homePageDTO.recordList, (item: RecordDTO, index: number) => {
                   ListItem() {
                     Row() {
                       // Text('北京').fontSize(20);
                       Column() {
-                        Text(item.entityDTO.name).fontSize(10);
+                        Text(item.entityId).fontSize(10);
                       }.border({ width: 1 })
                       .padding(10).width('20%').height(50);
 
                       Column() {
                         // Text('今日完成' + item.todayNumber).fontSize(10);
-                        Text('今日完成:' + item.todayNumber).fontSize(10);
+                        Text('添加时间:' + DateUtil.dateToStr(item.addTime)).fontSize(10);
                       }.border({ width: 1 })
                       .padding(10)
                       .width('50%').height(50);
@@ -173,12 +172,13 @@ struct Index {
                         Button('增加', {
                           type: ButtonType.Normal,
                           stateEffect: true
-                        }).fontSize(10).id(item.entityDTO.id)
+                        }).fontSize(10)
                           .onClick(event => {
-                            console.log("任务：" + item.entityDTO.id + " 增加1");
-                            item.todayNumber = item.todayNumber + 1;
+                            console.log("任务：" + item.entityId + " 增加1");
+                            // item.todayNumber = item.todayNumber + 1;
                             // 用于触发UI更新
-                            this.homePageDTO.randomCode = util.generateRandomUUID(true);
+                            // this.homePageDTO.randomCode = util.generateRandomUUID(true);
+                            // 插入数据库记录
 
                             // AlertDialog.show({
                             //   title: '提示',
